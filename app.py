@@ -1,4 +1,4 @@
-import lightgbm as lgb
+#import lightgbm as lgb
 from sklearn.feature_extraction.text import TfidfVectorizer
 import numpy as np
 import pandas as pd
@@ -20,8 +20,8 @@ application = Flask(__name__)
 
 
 #загружаем модели из файла
-vec = pickle.load(open("./models/tfidf.pickle", "rb"))
-model = lgb.Booster(model_file='./models/lgbm_model.txt')
+#vec = pickle.load(open("./models/tfidf.pickle", "rb"))
+#model = lgb.Booster(model_file='./models/lgbm_model.txt')
 
 
 # тестовый вывод
@@ -36,23 +36,8 @@ def hello():
 # предикт категории
 @application.route("/categoryPrediction" , methods=['GET', 'POST'])  
 def registration():
-    resp = {'message':'ok'
-           ,'category': -1
-           }
-
-    try:
-        getData = request.get_data()
-        json_params = json.loads(getData) 
-        
-        #напишите прогноз и верните его в ответе в параметре 'prediction'
-
-
-
-        
-    except Exception as e: 
-        print(e)
-        resp['message'] = e
-      
+    resp = {'message':"Hello World!"}
+    
     response = jsonify(resp)
     
     return response
