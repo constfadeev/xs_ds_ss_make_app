@@ -1,5 +1,5 @@
 import lightgbm as lgb
-from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 import numpy as np
 import pandas as pd
 import pickle
@@ -20,8 +20,8 @@ application = Flask(__name__)
 
 
 #загружаем модели из файла
-vec = pickle.load(open("./models/tfidf.pickle", "rb"))
-model = lgb.Booster(model_file='./models/lgbm_model.txt')
+vec = pickle.load(open('./models/feature.pkl', 'rb'))
+model = pickle.load(open('./models/clf.sav', 'rb'))
 
 
 # тестовый вывод
@@ -43,11 +43,11 @@ def registration():
     try:
         getData = request.get_data()
         json_params = json.loads(getData) 
+        message = json_params['user_message']
+        prediction = model.predict_proba(vec.transform([message])).tolist()[0]
         
-        #напишите прогноз и верните его в ответе в параметре 'prediction'
-        
-
-
+        print(prediction)
+        resp['category'] = prediction
         
     except Exception as e: 
         print(e)
@@ -55,7 +55,7 @@ def registration():
       
     response = jsonify(resp)
     
-    return response
+    return response #prediction
 
         
 
